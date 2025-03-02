@@ -14,18 +14,28 @@ word = random.choice(words)
 guessed = ["_"] * len(word)
 attempts = 3
 
+guessed_letters = set()  # set to store guessed letters
+
 print(f"Category: {category}")
 print(f"The word has {len(word)} letters. First letter: {word[0]}, Last letter: {word[-1]}")
 
 while "_" in guessed and attempts > 0:
     print("Word:", " ".join(guessed))
+    print(f"Guessed letters: {', '.join(sorted(guessed_letters)) if guessed_letters else 'None yet'}")
     guess = input("Guess a letter: ").lower()
 
+    if guess in guessed_letters:
+        print("You already guessed that letter! Try a different one.")
+        continue # skip the rest of the loop
+
+    # correct guess
     if guess in word:
+        guessed_letters.add(guess)  # only store correct guesses
         for i, letter in enumerate(word):
             if letter == guess:
                 guessed[i] = letter
     else:
+        guessed_letters.add(guess) # store incorrect guesses too
         attempts -= 1
         print(f"Incorrect! You have {attempts} attempts left.")
 
